@@ -1,0 +1,64 @@
+﻿@model List<WebApplication3.Models.blogg>
+@{
+    ViewBag.Title = "_menu";
+
+}
+
+   <script>
+       $(function () {
+
+           /* MENU */
+           $(".thumbnailpic").on("mouseover", function () {
+               $(this).find(".datum-placement-black").css("display", "block");
+               $(this).find(".datum-placement").css("display", "block");
+
+           });
+           $(".thumbnailpic").on("mouseleave", function () {
+               $(this).find(".datum-placement-black").css("display", "none");
+               $(this).find(".datum-placement").css("display", "none");
+
+           });
+       });
+
+</script>
+
+        @foreach (var item in Model)
+            {
+            <span style="display:none">@item.thumbnail</span>
+            if (item.latestpostID == item.index){<p style="text-align:center">LATEST POST</p>}
+            <div class="media thumblist">
+             
+                <div style="position:absolute;z-index:998">
+                    <div class="number @if (item.latestpostID == item.index) {<text>isfirstpostsquare</text>}">#@item.episode</div>
+
+                    @if (item.materials.Count > 0)
+                    { // post has material
+                        <div class="number @if (item.latestpostID == item.index) {<text>isfirstpostsquare</text>}">
+                            @item.materials.Count()
+                            <span class="glyphicon glyphicon-link"></span>
+                        </div>
+                    }
+                </div>
+                <a href="@Url.Action("FreeContent", "Home", new { postid = item.index})">
+                    <div class="col-xs-12 col-sm-6 col-md-12 @if (item.latestpostID == item.index) {<text>isfirstpost</text>} thumbnailpic" @if (item.thumbnail != null && item.thumbnail != "") { <text> style="padding: 0; height: 180px;align-items: center;background-image: url(http://christopherj-003-site1.gtempurl.com/pictures/@item.thumbnail); background-size: cover;" </text>  } else if (item.materials.Count > 0) { <text> style="padding: 0; height: 180px;align-items: center;background-image: url(@item.materials.First().imageurl); background-size: cover;}" </text>  } else { <text> style="padding: 0; height: 180px;align-items: center; background-size: cover;background:Black" </text> }>
+                        <div class="datum-placement-black"></div>
+                        <div class="datum-placement">@item.datum</div>
+                    </div>
+                </a>
+
+                <div class="col-xs-12 col-sm-6 col-md-12" style="padding: 0;text-align: center;">
+
+                    <div class="col-md-12 under-text-menu">
+                        <p class="media-heading">
+                            @* "linked" class *@
+                            <a href="@Url.Action("FreeContent", "Home", new { postid = item.index})">@item.titel</a>
+                            <span class="glyphicon glyphicon-pushpin"></span>
+                        </p>
+                        <input type="hidden" class="hiddenpost" value="@item.index" />
+                    </div>
+                </div>
+            </div>
+
+                    <!-- end number hashtag-->
+
+        }
